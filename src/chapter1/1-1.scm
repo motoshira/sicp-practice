@@ -62,3 +62,16 @@
                 2
                 1
                 0))))
+
+;; 1-12
+
+(define (pascal n k)
+  (cond
+   ((or (zero? k)
+        (= n k))
+    1)
+   (else
+    (+ (pascal (- n 1)
+               k)
+       (pascal (- n 1)
+               (- k 1))))))
