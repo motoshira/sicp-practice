@@ -1,5 +1,23 @@
 ;; 1-1
 
+;; 1-4
+
+(define (square x)
+  (* x x))
+
+(define (get-sum-of-square-of-two-big-mums x y z)
+  (if (> x z)
+      (if (> z y)
+          (+ (square x)
+             (square z))
+          (+ (square x)
+             (square y)))
+      (if (> x y)
+          (+ (square x)
+             (square z))
+          (+ (square y)
+             (square z)))))
+
 ;; 1-8 calc cube-root
 
 (define (good-enough? guess x)
