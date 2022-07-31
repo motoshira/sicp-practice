@@ -93,3 +93,29 @@
                k)
        (pascal (- n 1)
                (- k 1))))))
+
+;; 1-13
+
+(define (fast-expt x power)
+  (cond
+   ((zero? power) 1)
+   ((even? power)
+    (* (fast-expt x (/ power 2))
+       (fast-expt x (/ power 2))))
+   (else
+    (* x (fast-expt x (- power 1))))))
+
+(define (fast-expt-sub x pow acc)
+  (cond
+   ((zero? pow) acc)
+   ((even? pow)
+    (fast-expt-sub (* x x)
+                   (/ pow 2)
+                   acc))
+   (else
+    (fast-expt-sub x
+                   (- pow 1)
+                   (* acc x)))))
+
+(define (fast-expt-iter x power)
+  (fast-expt-sub x power 1))
