@@ -326,3 +326,8 @@
 
 (define (sum-squared-prime a b)
   (filtered-accumulate + prime? 0 square a inc b))
+
+(define (product-of-coprime n)
+  (define (coprime? x)
+    (= (gcd n x) 1))
+  (filtered-accumulate * coprime? 1 identity 1 inc (- n 1)))
