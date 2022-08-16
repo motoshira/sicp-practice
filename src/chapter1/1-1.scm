@@ -456,3 +456,43 @@
        (* a (square x))
        (* b x)
        c)))
+
+;; 1-41
+
+(define (double f)
+  (lambda (x)
+    (f (f x))))
+
+;; 1-42
+
+(define (compose f g)
+  (lambda (x)
+    (f (g x))))
+
+;; 1-43
+
+(define (repeated f n)
+  (define (build-fn i acc)
+    (println (list i acc))
+    (if (zero? i)
+        acc
+        (build-fn (dec i)
+                  (compose f acc))))
+  (build-fn n identity))
+
+;; 1-44
+
+(define (smooth f dx)
+  (lambda (x)
+    (/ (+ (f (- x dx))
+          (f x)
+          (f (+ x dx)))
+       3)))
+
+(define (smooth-n-times f n dx)
+  (define (build i)
+    (if (zero? i)
+        f
+        (smooth (build (dec i))
+                dx)))
+  (build n))
