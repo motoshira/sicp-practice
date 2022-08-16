@@ -337,12 +337,17 @@
 
 (define tolerance 0.001)
 
+(define (println x)
+  (display x)
+  (newline))
+
 (define (fixed-point f first-guess)
   (define (close-enough? x)
     (< (abs (- x (f x)))
        tolerance))
   (define (try guess)
     (let ((next (f guess)))
+      (println next)
       (if (close-enough? next)
           next
           (try next))))
@@ -357,3 +362,18 @@
   (fixed-point (lambda (x)
                  (average x (+ 1.0 (/ 1.0 x))))
                1.0))
+
+;; 1-36
+
+(define (f x)
+  (expt x x))
+
+(define guessed-answer
+  (let ((x 1.1))
+    (fixed-point
+     (lambda (y)
+       (/ (+ y
+             (/ (log 1000)
+                (log y)))
+          2))
+     x)))
