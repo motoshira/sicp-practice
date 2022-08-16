@@ -207,6 +207,7 @@
 ;; 1-29
 
 (define (inc x) (+ x 1))
+(define (dec x) (- x 1))
 
 (define (cube x) (* x x x))
 
@@ -377,3 +378,24 @@
                 (log y)))
           2))
      x)))
+
+;; 1-37
+
+(define (cont-frac n d k)
+  (define (sub i)
+    (if (> i k)
+        0
+        (/ (n i)
+           (+ (d i)
+              (sub (inc i))))))
+  (sub 1))
+
+(define (cont-frac-iter n d k)
+  (define (iter i acc)
+    (if (zero? i)
+        acc
+        (iter (dec i)
+              (/ (n i)
+                 (+ (d i)
+                    acc)))))
+  (iter k 0))
