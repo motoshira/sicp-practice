@@ -413,3 +413,15 @@
       d
       k)
      2.0))
+
+;; 1-39
+
+(define (tan-cf x k)
+  (define (sub i acc)
+    (if (zero? i)
+        acc
+        (sub (dec i)
+             (/ (expt x i)
+                (- (dec (* i 2))
+                   acc)))))
+  (sub k 0.0))
