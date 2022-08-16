@@ -119,3 +119,17 @@
 
 (define (fast-expt-iter x power)
   (fast-expt-sub x power 1))
+
+;; 1-21
+
+(define (find-smallest-divider x cand)
+  (cond
+   ((> cand (sqrt x)) x)
+   ((zero? (remainder x cand)) cand)
+   (else (find-smallest-divider x (1+ cand)))))
+
+(define (smallest-divisor x)
+  (find-smallest-divider x 2))
+
+(define (prime? x)
+  (= (smallest-divisor x) x))
