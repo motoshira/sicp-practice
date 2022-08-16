@@ -256,3 +256,35 @@
                (lambda (x) (+ x dx))
                b)
      dx))
+
+;; 1-31
+
+(define (product term a next b)
+  (if (> a b)
+      1
+      (* (term a)
+         (product term (next a) next b))))
+
+(define (product-iter term a next b)
+  (define (iter a acc)
+    (if (> a b)
+        acc
+        (iter (next a)
+              (* acc (term a)))))
+  (iter a 1))
+
+(define (factorial x)
+  (product identity 1 inc x))
+
+(define (guess-pi n)
+  (* (product-iter
+      (lambda (x)
+        (exact->inexact
+         (/ (* x
+               (+ x 2))
+            (* (+ x 1)
+               (+ x 1)))))
+      2
+      (lambda (x) (+ x 2))
+      (* (+ n 1) 2))
+     4))
