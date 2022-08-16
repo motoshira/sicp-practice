@@ -399,3 +399,17 @@
                  (+ (d i)
                     acc)))))
   (iter k 0))
+
+;; 1-38
+
+(define (guess-exp k)
+  (define (d i)
+    (if (or (= i 1)
+            (positive? (remainder (inc i) 3)))
+        1
+        (* (ceiling (/ i 3)) 2)))
+  (+ (cont-frac-iter
+      (const 1.0)
+      d
+      k)
+     2.0))
