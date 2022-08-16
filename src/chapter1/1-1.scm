@@ -133,3 +133,72 @@
 
 (define (prime? x)
   (= (smallest-divisor x) x))
+
+;; 1-22
+
+(define (report-time elapsed-time)
+  (display "*** ")
+  (display elapsed-time)
+  (newline))
+
+(define (start-prime-test n start-time)
+  (begin
+    (prime? n)
+    (report-time (/ (exact->inexact
+                     (- (get-internal-real-time)
+                        start-time))
+                    internal-time-units-per-second))))
+
+(define (timed-prime-test n)
+  (newline)
+  (display n)
+  (start-prime-test n (get-internal-real-time)))
+
+;; 1-28
+
+(define (expmod base exp mod)
+  (cond
+   ((zero? exp) 1)
+   ((even? exp) (remainder (square (expmod base (/ exp 2) mod))
+                           mod))
+   (else (remainder (* base (expmod base (- exp 1) mod))
+                    mod))))
+
+(define (fermat-test n)
+  (define (try-it a)
+    (= (expmod a n n) a))
+  (try-it (1+ (random (- n 2)))))
+
+(define (fast-prime? n times)
+  (cond
+   ((zero? times) #t)
+   ((fermat-test n) (fast-prime? n (- times 1)))
+   (else #f)))
+
+(define (expmod-revised base exp mod)
+  (define (disp e)
+    (cond
+     ((zero? e) 1)
+     ((even? e)
+      (let* ((half (disp (/ e 2)))
+             (squared (remainder (square half) mod)))
+        ;; ここでresが1なら自明でない平方根が見つかったということなので
+        ;; シグナルとして0を返しておく
+        (if (and (not (= half 1))
+                 (not (= half (- mod 1)))
+                 (= squared 1))
+            0
+            squared)))
+     (else (remainder (* base (disp (- e 1)))
+                      mod))))
+  (disp exp))
+
+(define (miller-rabin-test n times)
+  (if (zero? times)
+      #t
+      (let ((a (+ (random (- n 2))
+                  1)))
+        (if (= (expmod-revised a (- n 1) n)
+               1)
+            (miller-rabin-test n (- times 1))
+            #f))))
