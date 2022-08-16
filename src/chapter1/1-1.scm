@@ -425,3 +425,34 @@
                 (- (dec (* i 2))
                    acc)))))
   (sub k 0.0))
+
+;; 1-43
+
+(define (deriv g dx)
+  (lambda (x)
+    (/ (- (g (+ x dx))
+          (g x))
+       dx)))
+
+(define (newton-transform g dx)
+  (lambda (x)
+    (- x
+       (/ (g x)
+          ((deriv g dx) x)))))
+
+(define (newtons-method g guess dx)
+  (fixed-point (newton-transform g dx) guess))
+
+(define (sqrt-revised x)
+  (newtons-method
+   (lambda (y)
+     (- (square y) x))
+   1.0
+   0.000000001))
+
+(define (cubic a b c)
+  (lambda (x)
+    (+ (cube x)
+       (* a (square x))
+       (* b x)
+       c)))
