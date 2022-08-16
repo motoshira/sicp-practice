@@ -529,9 +529,38 @@
      (log 2)))
 
 (define (n-root x n)
-  (fixed-point
+  (fixed-point-revised
    (repeated (average-damp
               (lambda (y)
                 (/ x (expt y (dec n)))))
              (round (log-of-two n)))
    1.0))
+
+;; 1-46
+
+(define (iterative-improve improve enough?)
+  (lambda (guess-first)
+    (define (try guess)
+      (let ((next (improve guess)))
+        (if (enough? next)
+            next
+            (try next))))
+    (try guess-first)))
+
+(define (sqrt-revised x)
+  ((iterative-improve
+    (average-damp
+     (lambda (y)
+       (/ x y)))
+    (lambda (guess)
+      (< (abs (- (square guess) x))
+         tolerance)))
+   1.0))
+
+(define (fixed-point-revised f first-guess)
+  ((iterative-improve
+    f
+    (lambda (guess)
+      (< (abs (- guess (f guess)))
+         tolerance)))
+   first-guess))
