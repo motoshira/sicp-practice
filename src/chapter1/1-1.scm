@@ -132,7 +132,8 @@
   (find-smallest-divider x 2))
 
 (define (prime? x)
-  (= (smallest-divisor x) x))
+  (and (> x 1)
+       (= (smallest-divisor x) x)))
 
 ;; 1-22
 
@@ -309,3 +310,19 @@
       null-value
       (combiner (term a)
                 (accumulate combiner null-value term (next a) next b))))
+
+;; 1-33
+
+(define (filtered-accumulate combiner filter-fn null-value term a next b)
+  (define (iter a acc)
+    (if (> a b)
+        acc
+        (iter (next a)
+              (combiner acc
+                        (if (filter-fn a)
+                            (term a)
+                            null-value)))))
+  (iter a null-value))
+
+(define (sum-squared-prime a b)
+  (filtered-accumulate + prime? 0 square a inc b))
