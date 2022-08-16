@@ -331,3 +331,29 @@
   (define (coprime? x)
     (= (gcd n x) 1))
   (filtered-accumulate * coprime? 1 identity 1 inc (- n 1)))
+
+(define (average x y)
+  (/ (+ x y) 2))
+
+(define tolerance 0.001)
+
+(define (fixed-point f first-guess)
+  (define (close-enough? x)
+    (< (abs (- x (f x)))
+       tolerance))
+  (define (try guess)
+    (let ((next (f guess)))
+      (if (close-enough? next)
+          next
+          (try next))))
+  (try first-guess))
+
+(define (my-sqrt x)
+  (fixed-point (lambda (y)
+                 (average y (/ x y)))
+               1.0))
+
+(define golden-ratio
+  (fixed-point (lambda (x)
+                 (average x (+ 1.0 (/ 1.0 x))))
+               1.0))
