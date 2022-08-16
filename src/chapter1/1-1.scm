@@ -336,7 +336,7 @@
 (define (average x y)
   (/ (+ x y) 2))
 
-(define tolerance 0.001)
+(define tolerance 0.000001)
 
 (define (println x)
   (display x)
@@ -348,15 +348,19 @@
        tolerance))
   (define (try guess)
     (let ((next (f guess)))
-      (println next)
+      ;; (println next)
       (if (close-enough? next)
           next
           (try next))))
   (try first-guess))
 
+(define (average-damp f)
+  (lambda (y)
+    (average y (f y))))
+
 (define (my-sqrt x)
-  (fixed-point (lambda (y)
-                 (average y (/ x y)))
+  (fixed-point (average-damp
+                (lambda (y) (/ x y)))
                1.0))
 
 (define golden-ratio
@@ -473,7 +477,7 @@
 
 (define (repeated f n)
   (define (build-fn i acc)
-    (println (list i acc))
+    ;; (println (list i acc))
     (if (zero? i)
         acc
         (build-fn (dec i)
@@ -496,3 +500,38 @@
         (smooth (build (dec i))
                 dx)))
   (build n))
+
+;; 1-45
+
+(define (get-timer)
+  (let ((start (get-internal-real-time)))
+    (lambda ()
+      (/ (- (get-internal-real-time)
+            start)
+         internal-time-units-per-second))))
+
+(define (test-fixed-point x guess timeout)
+  (define (close-enough? x)
+    (< (abs (- x (f x)))
+       tolerance))
+  (define (try guess timer)
+    (let ((next (f guess)))
+      ;; (println next)
+      (if (close-enough? next)
+          next
+          (if (< (timer) timeout)
+              (try next timer)
+              #f))))
+  (try guess (get-timer)))
+
+(define (log-of-two x)
+  (/ (log x)
+     (log 2)))
+
+(define (n-root x n)
+  (fixed-point
+   (repeated (average-damp
+              (lambda (y)
+                (/ x (expt y (dec n)))))
+             (round (log-of-two n)))
+   1.0))
