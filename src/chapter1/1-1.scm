@@ -236,3 +236,23 @@
            (g 0)
            (g n))
         (/ h 3)))))
+
+;; 1-30
+
+(define (sum-iter term a next b)
+  (define (iter a acc)
+    (if (> a b)
+        acc
+        (iter (next a)
+              (+ acc
+                 (term a)))))
+  (iter a 0))
+
+; for test sum-iter
+
+(define (integral-iter f a b dx)
+  (* (sum-iter f
+               (+ a (/ dx 2.0))
+               (lambda (x) (+ x dx))
+               b)
+     dx))
