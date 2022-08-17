@@ -97,3 +97,38 @@
                                    (rectang-p1 rectang)))
      (segment-length (make-segment (rectang-p0 rectang)
                                    (rectang-p2 rectang)))))
+
+;; 2-4
+
+(define (my-cons x y)
+  (lambda (m) (m x y)))
+
+(define (my-car m)
+  (m (lambda (x y) x)))
+
+(define (my-cdr m)
+  (m (lambda (x y) y)))
+
+;; 2-5
+
+(define (println x)
+  (display x)
+  (newline))
+
+(define (num-cons x y)
+  (* (expt 2 x)
+     (expt 3 y)))
+
+(define (num-car n)
+  (define (rec n acc)
+    (if (zero? (remainder n 2))
+        (rec (quotient n 2) (+ acc 1))
+        acc))
+  (rec n 0))
+
+(define (num-cdr n)
+  (define (rec n acc)
+    (if (zero? (remainder n 3))
+        (rec (quotient n 3) (+ acc 1))
+        acc))
+  (rec n 0))
