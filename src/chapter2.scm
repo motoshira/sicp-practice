@@ -132,3 +132,17 @@
         (rec (quotient n 3) (+ acc 1))
         acc))
   (rec n 0))
+
+;; 2-6
+
+(define (to-int f)
+  ((f identity) 0))
+
+(define zero
+  (lambda (f)
+    (lambda (x) x)))
+
+(define (add-one n)
+  (lambda (g)
+    (lambda (x)
+      (g ((n g) x)))))
