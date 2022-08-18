@@ -146,3 +146,28 @@
   (lambda (g)
     (lambda (x)
       (g ((n g) x)))))
+
+;; 2-7
+
+(define (make-interval lower upper)
+  (cons lower upper))
+
+(define (lower-bound interval)
+  (car interval))
+
+(define (upper-bound interval)
+  (cdr interval))
+
+(define (add-interval x y)
+  (make-interval (+ (lower-bound x)
+                    (lower-bound y))
+                 (+ (upper-bound x)
+                    (upper-bound y))))
+
+;; 2-8
+
+(define (sub-interval x y)
+  (make-interval (- (lower-bound x)
+                    (upper-bound y))
+                 (+ (upper-bound x)
+                    (lower-bound y))))
