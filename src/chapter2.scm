@@ -164,6 +164,14 @@
                  (+ (upper-bound x)
                     (upper-bound y))))
 
+(define (mul-interval x y)
+  (let ((p1 (* (lower-bound x) (lower-bound y)))
+        (p2 (* (lower-bound x) (upper-bound y)))
+        (p3 (* (upper-bound x) (lower-bound y)))
+        (p4 (* (upper-bound x) (upper-bound y))))
+    (make-interval (min p1 p2 p3 p4)
+                   (max p1 p2 p3 p4))))
+
 ;; 2-8
 
 (define (sub-interval x y)
@@ -171,3 +179,21 @@
                     (upper-bound y))
                  (+ (upper-bound x)
                     (lower-bound y))))
+
+;; 2-10
+
+(define (contain-zero? interval)
+  (<= (lower-bound interval)
+      0
+      (upper-bound interval)))
+
+(define (inverse-intarval interval)
+  (when (contain-zero? interval)
+    (error "This interval contains zero:" interval))
+  (let ((p1 (/ 1.0 (lower-bound interval)))
+        (p2 (/ 1.0 (upper-bound interval))))
+    (make-interval (min p1 p2)
+                   (max p1 p2))))
+
+(define (div-interval x y)
+  (mul-interval x (inverse-intarval y)))
