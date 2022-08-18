@@ -197,3 +197,56 @@
 
 (define (div-interval x y)
   (mul-interval x (inverse-intarval y)))
+
+;; 2-11
+
+(define (mul-interval-revised x y)
+  (cond
+   ((positive? (lower-bound x))
+    (cond
+     ((positive? (lower-bound y))
+      (make-interval (* (lower-bound x)
+                        (lower-bound y))
+                     (* (upper-bound x)
+                        (upper-bound y))))
+     ((contain-zero? y)
+      (make-interval (* (upper-bound x)
+                        (lower-bound y))
+                     (* (upper-bound x)
+                        (upper-bound y))))
+     (else
+      (make-interval (* (upper-bound x)
+                        (lower-bound y))
+                     (* (lower-bound x)
+                        (upper-bound y))))))
+   ((contain-zero? x)
+    (cond
+     ((positive? (lower-bound y))
+      (make-interval (* (lower-bound x)
+                        (upper-bound y))
+                     (* (upper-bound x)
+                        (upper-bound y))))
+     ((contain-zero? y)
+      (make-interval x y))
+     (else
+      (make-interval (* (upper-bound x)
+                        (lower-bound y))
+                     (* (lower-bound x)
+                        (lower-bound y))))))
+   (else
+    (cond
+     ((positive? (lower-bound y))
+      (make-interval (* (upper-bound x)
+                        (upper-bound y))
+                     (* (lower-bound x)
+                        (upper-bound y))))
+     ((contain-zero? y)
+      (make-interval (* (lower-bound x)
+                        (upper-bound y))
+                     (* (upper-bound x)
+                        (upper-bound y))))
+     (else
+      (make-interval (* (upper-bound x)
+                        (upper-bound y))
+                     (* (lower-bound x)
+                        (lower-bound y))))))))
