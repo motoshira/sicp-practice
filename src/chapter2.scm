@@ -277,3 +277,13 @@
   (if (null? (cdr xs))
       (car xs)
       (last-pair (cdr xs))))
+
+;; 2-18
+
+(define (my-reverse xs)
+  (define (rec xs acc)
+    (if (null? xs)
+        acc
+        (rec (cdr xs)
+             (cons (car xs) acc))))
+  (rec xs '()))
