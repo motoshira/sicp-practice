@@ -422,3 +422,20 @@
                right))))))
 
 ;; d. constructorとselectorを修正するだけでOK
+
+;; 2-30
+
+(define (square-tree xs)
+  (cond
+   ((null? xs) '())
+   ((number? xs) (square xs))
+   (else
+    (cons (square-tree (car xs))
+          (square-tree (cdr xs))))))
+
+(define (square-tree-revised xs)
+  (map (lambda (x)
+         (if (number? x)
+             (square x)
+             (square-tree-revised x)))
+       xs))
