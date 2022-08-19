@@ -322,3 +322,23 @@
                 (null? (cdr xs)))
             '()
             (apply same-parity (cdr xs)))))
+
+;; 2-21
+
+(define (square x) (* x x))
+
+(define (square-list xs)
+  (if (null? xs)
+      '()
+      (cons (square (car xs))
+            (square-list (cdr xs)))))
+
+(define (square-list-revised xs)
+  (map square xs))
+
+;; 2-23
+
+(define (my-for-each f xs)
+  (unless (null? xs)
+    (f (car xs))
+    (my-for-each f (cdr xs))))
