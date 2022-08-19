@@ -313,3 +313,12 @@
            (except-first-denomiations coin-values))
        (cc (- amount (first-denomiation coin-values))
            coin-values)))))
+
+;; 2-20
+
+(define (same-parity x . xs)
+  (cons x
+        (if (or (null? xs)
+                (null? (cdr xs)))
+            '()
+            (apply same-parity (cdr xs)))))
