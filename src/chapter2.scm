@@ -376,3 +376,49 @@
           (rec (cdr xs)
                (append first acc)))))
   (reverse (rec xs '())))
+
+;; 2-29
+
+(define (make-mobile left right)
+  (list left right))
+
+(define (make-branch length structure)
+  (list length structure))
+
+(define (left-branch m)
+  (car m))
+
+(define (right-branch m)
+  (cadr m))
+
+(define (branch-length b)
+  (car b))
+
+(define (branch-structure b)
+  (cadr b))
+
+(define (total-weight m)
+  (cond
+   ((number? m) m)
+   ((list? m)
+    (+ (total-weight (branch-structure (left-branch m)))
+       (total-weight (branch-structure (right-branch m)))))
+   (else (error "Unknown mobile component: " m))))
+
+(define (moment b)
+  (* (branch-length b)
+     (total-weight (branch-structure b))))
+
+(define (balanced? m)
+  (or (number? m)
+      (let ((left (left-branch m))
+            (right (left-branch m)))
+        (and (= (moment left) (moment right))
+             (balanced?
+              (branch-structure
+               left))
+             (balanced?
+              (branch-structure
+               right))))))
+
+;; d. constructorとselectorを修正するだけでOK
