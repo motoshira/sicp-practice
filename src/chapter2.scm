@@ -363,3 +363,16 @@
   (rec xs '()))
 
 ;; (deep-reverse '(1 (2 (3 4)) 3))
+
+;; 2-28
+
+(define (frindge xs)
+  (define (rec xs acc)
+    (if (null? xs)
+        acc
+        (let ((first (if (list? (car xs))
+                         (rec (car xs) '())
+                         (list (car xs)))))
+          (rec (cdr xs)
+               (append first acc)))))
+  (reverse (rec xs '())))
