@@ -342,3 +342,24 @@
   (unless (null? xs)
     (f (car xs))
     (my-for-each f (cdr xs))))
+
+
+;; 2-26
+
+(define x (list 1 2 3))
+(define y (list 4 5 6))
+
+;; 2-27
+
+(define (deep-reverse xs)
+  (define (rec xs acc)
+    (if (null? xs)
+        acc
+        (let ((first (if (list? (car xs))
+                         (rec (car xs) '())
+                         (car xs))))
+          (rec (cdr xs)
+               (cons first acc)))))
+  (rec xs '()))
+
+;; (deep-reverse '(1 (2 (3 4)) 3))
