@@ -270,3 +270,10 @@
 
 (define (percent i)
   (/ (width i) (center i)))
+
+;; 2-17
+
+(define (last-pair xs)
+  (if (null? (cdr xs))
+      (car xs)
+      (last-pair (cdr xs))))
